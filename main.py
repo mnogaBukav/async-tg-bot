@@ -11,11 +11,8 @@ from utils.config import BOT_TOKEN
 async def main() -> None:
     bot = Bot(token=BOT_TOKEN, 
               default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    
     dp = Dispatcher()
-    dp.include_routers(
-        common_router,
-    )
+    dp.include_routers(common_router,)
 
     await dp.start_polling(bot)
 
