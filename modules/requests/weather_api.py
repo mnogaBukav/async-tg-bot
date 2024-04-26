@@ -8,6 +8,7 @@ class WeatherAPI:
         async with ClientSession() as s:
             async with s.get(url, params=params) as r:
                 try:
+                    print(r.status)
                     r.raise_for_status()
                 except ClientResponseError:
                     return ''
