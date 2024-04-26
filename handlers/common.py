@@ -21,10 +21,9 @@ async def weather_command_handler(message: Message):
             await WeatherAPI.get_weather(
                 OPEN_WEATHER_API_URL,
                 {'q': message.text.split()[1],
-                 'app_id': API_KEY,
+                 'appid': API_KEY,
                  'units': 'metric',}
             )
         )
-    except Exception as e:
-        print(e)
-        await message.answer("Error with receiving weather forecast.")
+    except IndexError:
+        await message.answer("Enter city name when calling `/weather` command.")

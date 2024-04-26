@@ -1,4 +1,6 @@
 from typing import Any, Dict
+from datetime import datetime
+
 from aiohttp import ClientSession, ClientResponseError
 
 
@@ -8,21 +10,24 @@ class WeatherAPI:
         async with ClientSession() as s:
             async with s.get(url, params=params) as r:
                 try:
-                    print(r.status)
                     r.raise_for_status()
                 except ClientResponseError:
-                    return ''
+                    return 'Error with receiving a weather forecast.'
                 return __class__.__json_parse(await r.json())
 
     @staticmethod
     def __json_parse(json: Dict[str, Any]) -> str:
-        return (f'city: {json['name']}\n'
-                f'temp: {json['main']['temp']}\n'
-                f'feels like: {json['main']['feels_like']}\n'
-                f'weather: {json['weather'][0]['description']}\n'
-                f'clouds: {json['clouds']['all']}%\n'
-                f'wind: {json['wind']['speed']}\n'
-                f'humidity: {json['main']['humidity']}\n'
-                f'pressure: {json['main']['pressure']}\n'
-                f'sunrise: {json['sys']['sunrise']}\n'
-                f'sunset: {json['sys']['sunset']}\n')
+        sunrise = datetime.fromtimestamp(json['sys']['sunrise'])
+        sunset = datetime.fromtimestamp(json['sys']['sunset'])
+        return (f'Current time: {datetime.now().strftime('%y-%m-%d %H:%M')}\n'
+                f'City: {json['name']}\n'
+                f'Temp: {json['main']['temp']}°C\n'
+                f'Feels like: {json['main']['feels_like']}°C\n'
+                f'Weather: {json['weather'][0]['description']}\n'
+                f'Clouds: {json['clouds']['all']}%\n'
+                f'Wind: {json['wind']['speed']} m/s\n'
+                f'Humidity: {json['main']['humidity']}%\n'
+                f'Pressure: {json['main']['pressure']} mm Hg\n'
+                f'Sunrise: {sunrise}\n'
+                f'Sunset: {sunset}\n'
+                f'Length of day: {sunset - sunrise}')
