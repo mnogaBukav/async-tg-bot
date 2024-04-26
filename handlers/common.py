@@ -3,6 +3,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 
 from modules.requests.weather_api import WeatherAPI
+from utils.config import API_KEY, OPEN_WEATHER_API_URL
 
 
 common_router = Router()
@@ -17,7 +18,13 @@ async def weather_command_handler(message: Message):
     """This handler receives messages with `/weather` command"""
     try:
         await message.answer(
-            await WeatherAPI.get_weather(message.text.split()[1])
+            await WeatherAPI.get_weather(
+                OPEN_WEATHER_API_URL,
+                {'q': message.text.split()[1],
+                 'app_id': API_KEY,
+                 'units': 'metric',}
+            )
         )
-    except Exception:
-        await message.answer("Error with receiving weather forecast")
+    except Exception as e:
+        print(e)
+        await message.answer("Error with receiving weather forecast.")
