@@ -2,10 +2,13 @@ from typing import Any, Dict
 from datetime import datetime
 
 from aiohttp import ClientSession, ClientResponseError
+from requests.async_http_client import AsyncHTTPClient
 
 
-class WeatherAPI:
-    @staticmethod
+class OpenWeatherClient:
+    def __init__(self, client: AsyncHTTPClient) -> None:
+        self.__client = client
+    
     async def get_weather(url: str, params: Dict[str, str]) -> str:
         async with ClientSession() as s:
             async with s.get(url, params=params) as r:
@@ -15,11 +18,11 @@ class WeatherAPI:
                     return 'Error with receiving a weather forecast.'
                 return __class__.__json_parse(await r.json())
 
-    @staticmethod
     def __json_parse(json: Dict[str, Any]) -> str:
-        sunrise = datetime.fromtimestamp(json['sys']['sunrise'])
-        sunset = datetime.fromtimestamp(json['sys']['sunset'])
-        return (f'Current time: {datetime.now().strftime('%y-%m-%d %H:%M')}\n'
+        format = '%d-%m-%y, %H:%M'
+        sr = datetime.fromtimestamp(json['sys']['sunrise']).strftime(format)
+        ss = datetime.fromtimestamp(json['sys']['sunset']).strftime(format)
+        return (f'Current time: {datetime.now().strftime(format)}\n'
                 f'City: {json['name']}\n'
                 f'Temp: {json['main']['temp']}°C\n'
                 f'Feels like: {json['main']['feels_like']}°C\n'
@@ -28,6 +31,6 @@ class WeatherAPI:
                 f'Wind: {json['wind']['speed']} m/s\n'
                 f'Humidity: {json['main']['humidity']}%\n'
                 f'Pressure: {json['main']['pressure']} mm Hg\n'
-                f'Sunrise: {sunrise}\n'
-                f'Sunset: {sunset}\n'
-                f'Length of day: {sunset - sunrise}')
+                f'Sunrise: {sr}\n'
+                f'Sunset: {ss}\n'
+                f'Length of day: {ss - sr}')
