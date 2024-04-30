@@ -16,6 +16,7 @@ async def main() -> None:
         common.router, weather.router,
     )
     await dp.start_polling(bot)
+    print("running!")
 
 
 if __name__ == '__main__':

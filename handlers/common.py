@@ -4,9 +4,12 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from buttons.kb_buttons import start_markup, weather_btn, weather_markup
+from modules.requests.async_http_client import AsyncHTTPClient
 from states.current_weather import CurrentWeather
 
+http_client = AsyncHTTPClient()
 router = Router()
+
 
 @router.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
