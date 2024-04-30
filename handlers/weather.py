@@ -10,6 +10,7 @@ from utils.config import API_KEY, OPEN_WEATHER_API_URL
 
 router = Router()
 weather_client = OpenWeatherClient(http_client)
+
 @router.message(CurrentWeather.choosing_cur_geo_or_city_name)
 async def handle_city(msg: Message, state: FSMContext):
     data = {'appid': API_KEY, 'units': 'metric'}

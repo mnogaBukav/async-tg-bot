@@ -15,9 +15,10 @@ async def main() -> None:
     dp.include_routers(
         common.router, weather.router,
     )
-    await dp.start_polling(bot)
-    print("running!")
-
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await common.http_client.close_session()
 
 if __name__ == '__main__':
     run(main())

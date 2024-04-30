@@ -1,8 +1,7 @@
-from typing import Any, Dict
+from typing import Dict
 from datetime import datetime
 
-from aiohttp import ClientResponseError
-from requests.async_http_client import AsyncHTTPClient
+from modules.requests.async_http_client import AsyncHTTPClient
 
 
 class OpenWeatherClient:
@@ -12,14 +11,10 @@ class OpenWeatherClient:
     async def get_current_weather(
         self, url: str, params: Dict[str, str]
     ) -> str:
-        text = ''
-        async with self.__client.get(url, params=params) as r:
-            try:
-                r.raise_for_status()
-            except ClientResponseError:
-                text = 'Error with receiving a weather forecast.'
-            text = self.__json_parse(await r.json())
-        return text
+        response = await self.__client.get(url, params=params) 
+        if response.status == 200:
+            return self.__json_parse(await response.json())
+        return 'Error with receiving a weather forecast.'
     
     @staticmethod
     def __json_parse(json: Dict[str, str]) -> str:

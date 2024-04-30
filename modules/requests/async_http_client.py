@@ -27,7 +27,6 @@ class AsyncHTTPClient:
         Returns:
         - ClientResponse: The response from the server."""
         async with getattr(self.__session, method)(url, **kwargs) as r:
-            r.raise_for_status()
             return r
 
     async def get(
@@ -61,5 +60,5 @@ class AsyncHTTPClient:
         """Closes the client session.
 
         Raises:
-            RuntimeError: If the session is already closed."""
+        - RuntimeError: If the session is already closed."""
         await self.__session.close()
