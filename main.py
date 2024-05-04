@@ -18,7 +18,7 @@ async def main() -> None:
     try:
         await dp.start_polling(bot)
     finally:
-        await common.http_client.close_session()
+        await common.http_session.close()
 
 
 if __name__ == '__main__':
