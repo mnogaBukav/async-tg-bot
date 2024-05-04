@@ -18,6 +18,12 @@ async def handle_city(msg: Message, state: FSMContext):
         location = {'lat': str(msg.location.latitude),
                     'lon': str(msg.location.longitude)}
     else:
+        text_list = msg.text.split(',')
+        if len(text_list) == 2:
+            location = {'lat': str(text_list[0]),
+                        'lon': str(text_list[1])}
+        else:
+            location = {'q': text_list[0] or ''}
         location = {'q': msg.text or ''}
     data.update(location)
 

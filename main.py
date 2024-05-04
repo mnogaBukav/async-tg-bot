@@ -20,5 +20,6 @@ async def main() -> None:
     finally:
         await common.http_client.close_session()
 
+
 if __name__ == '__main__':
     run(main())

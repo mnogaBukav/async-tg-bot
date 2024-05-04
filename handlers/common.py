@@ -19,7 +19,7 @@ async def command_start_handler(msg: Message) -> None:
 
 @router.message(F.text == cancel_btn.text)
 async def cancel_handler(msg: Message, state: FSMContext):
-    await msg.answer("Menu", reply_markup=start_markup)
+    await msg.answer("Menu:", reply_markup=start_markup)
     await state.clear()
 
 @router.message(StateFilter(None), F.text == play_dice_btn.text)
@@ -29,5 +29,5 @@ async def play_dice_handler(msg: Message):
 @router.message(StateFilter(None), F.text == weather_btn.text)
 async def weather_command_handler(msg: Message, state: FSMContext):
     """This handler receives messages with `/weather` command"""
-    await msg.answer("Choose location:", reply_markup=weather_markup)
+    await msg.answer("Enter location or send your geolocation", reply_markup=weather_markup)
     await state.set_state(CurrentWeather.choosing_cur_geo_or_city_name)
