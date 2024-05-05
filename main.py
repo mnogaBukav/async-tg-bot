@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-from handlers import common, weather
+from handlers import common, weather, games
 from utils.config import BOT_TOKEN
 
 
@@ -13,7 +13,7 @@ async def main() -> None:
               default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher()
     dp.include_routers(
-        common.router, weather.router,
+        common.router, weather.router, games.router
     )
     try:
         await dp.start_polling(bot)
