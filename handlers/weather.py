@@ -5,7 +5,6 @@ from aiogram.filters import StateFilter
 
 from modules.weather_client import WeatherClient
 from buttons.kb_buttons import start_markup, weather_btn, weather_markup
-from handlers.common import http_session
 from states.current_weather import CurrentWeather
 from utils.config import API_KEY, OPEN_WEATHER_API_URL
 

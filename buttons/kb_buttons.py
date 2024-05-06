@@ -8,6 +8,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import (
     KeyboardButton, 
     InlineKeyboardButton, 
+    InlineKeyboardMarkup,
     ReplyKeyboardMarkup,
 )
 
@@ -51,7 +52,15 @@ weather_markup = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
-def bet_markup():
-    builder = InlineKeyboardBuilder()
-    builder.add(higher_btn, lower_btn, equal_btn)
-    return builder.as_markup()
+dice_markup = InlineKeyboardMarkup(inline_keyboard=[
+    [higher_btn, lower_btn, equal_btn]
+])
+
+game_kb = {
+    '🎲': dice_markup, 
+    '🎯': dice_markup, 
+    '🏀': dice_markup, 
+    '⚽': dice_markup, 
+    '🎳': dice_markup, 
+    '🎰': dice_markup,
+}
