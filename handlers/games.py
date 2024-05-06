@@ -5,10 +5,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.filters import StateFilter
 from aiogram.types import Message, CallbackQuery
 
+from buttons.kb_common import play_games_btn
+from buttons.kb_games import games_markup, dice_markup, change_bet_btn, game_kb
 from states.games_states import GameState
-from buttons.kb_buttons import (
-    games_markup, dice_markup, play_games_btn, change_bet_btn, game_kb,
-)
 
 router = Router()
 
@@ -22,18 +21,19 @@ async def play_games_handler(msg: Message, state: FSMContext) -> None:
     await state.set_state(GameState.choosing_game)
 
 
-@router.message(GameState.choosing_game, F.text)
-async def play_dice_handler(msg: Message, state: FSMContext) -> None:
-    if msg.dice is None:
-        await msg.answer('Choose correct game!')
+@router.message(GameState.choosing_game)
+async def play_dice_handler(msg: Message, state: FSMContext) -> None:    
+    try:
+        kb = game_kb[msg.text]
+    except KeyError:
+        await msg.answer('Game not found!')
         return
-    
     await msg.answer(
         "bet: ur value will be",
-        reply_markup=game_kb[msg.dice.emoji]
+        reply_markup=kb
     )
     await state.set_state(GameState.choosing_bet)
-    await state.set_data({'game': msg.dice.emoji})
+    await state.set_data({'game': msg.text})
 
 
 @router.callback_query(GameState.choosing_bet, F.data.startswith("bet_"))
@@ -72,7 +72,7 @@ async def roll_dices(msg: Message, state: FSMContext) -> None:
 @router.message(GameState.roll_dices, F.text == change_bet_btn.text)
 async def change_bet(msg: Message, state: FSMContext) -> None:
     await msg.answer(
-        f'your bet is: none\nRoll the dice!', 
+        f'Your bet is: none\nRoll the dice!', 
         reply_markup=dice_markup
     )
     await state.set_state(GameState.roll_dices)

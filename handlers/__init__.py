@@ -1,7 +1,5 @@
-from aiogram import Router
-
 from . import common, games, weather
 
-routers: tuple[Router] = (
+routers = (
     common.router, games.router, weather.router,
 )
