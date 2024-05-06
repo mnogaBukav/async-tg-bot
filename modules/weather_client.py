@@ -1,4 +1,3 @@
-from typing import Dict
 from datetime import datetime as dt
 
 from aiohttp import ClientSession
@@ -17,7 +16,7 @@ class WeatherClient:
     async def get_current(
         self, 
         url: str, 
-        params: Dict[str, str]
+        params: dict[str, str]
     ) -> str:
         """
         Fetch current weather data from the provided URL.

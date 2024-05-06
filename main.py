@@ -1,18 +1,16 @@
 from asyncio import run
 
 from aiogram import Bot, Dispatcher
-from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiohttp import ClientSession
 
 from modules.weather_client import WeatherClient
-from handlers import common, weather, games
+from handlers import routers
 from utils.config import BOT_TOKEN
 
 
 async def main() -> None:
-    bot = Bot(token=BOT_TOKEN, 
-              default=DefaultBotProperties(parse_mode=ParseMode.HTML))    
+    bot = Bot(BOT_TOKEN, parse_mode=ParseMode.HTML)
     
     client_session = ClientSession()
     dp = Dispatcher(
@@ -20,10 +18,10 @@ async def main() -> None:
         weather_client=WeatherClient(client_session),
     )
     
-    dp.include_routers(
-        common.router, weather.router, games.router
-    )
-      
+    dp.include_routers(routers)
+
+    await bot.delete_webhook(drop_pending_updates=True)
+
     try:
         await dp.start_polling(bot)
     finally:

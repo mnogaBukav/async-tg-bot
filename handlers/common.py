@@ -1,5 +1,5 @@
 from aiogram import Router, html, F
-from aiogram.filters import CommandStart, StateFilter
+from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
@@ -15,6 +15,6 @@ async def command_start_handler(msg: Message, state: FSMContext) -> None:
     await state.clear()
 
 @router.message(F.text == cancel_btn.text)
-async def cancel_handler(msg: Message, state: FSMContext):
+async def cancel_handler(msg: Message, state: FSMContext) -> None:
     await msg.answer("Menu:", reply_markup=start_markup)
     await state.clear()

@@ -12,4 +12,4 @@ API_KEY: str = getenv('API_KEY')
 BOT_TOKEN: str = getenv('BOT_TOKEN')
 
 # Define URL for OpenWeatherMap API
-OPEN_WEATHER_API_URL = f'https://api.openweathermap.org/data/2.5/weather'
+OPEN_WEATHER_API_URL: str = f'https://api.openweathermap.org/data/2.5/weather'

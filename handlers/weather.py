@@ -8,19 +8,18 @@ from buttons.kb_buttons import start_markup, weather_btn, weather_markup
 from states.current_weather import CurrentWeather
 from utils.config import API_KEY, OPEN_WEATHER_API_URL
 
+router: Router = Router()
 
-router = Router()
 
 @router.message(StateFilter(None), F.text == weather_btn.text)
-async def weather_command_handler(msg: Message, state: FSMContext):
-    """This handler receives messages with `/weather` comman   d"""
+async def weather_command_handler(msg: Message, state: FSMContext) -> None:
     await msg.answer("Enter location or send your geolocation", reply_markup=weather_markup)
     await state.set_state(CurrentWeather.choosing_cur_geo_or_city_name)
 
+
 @router.message(CurrentWeather.choosing_cur_geo_or_city_name)
-async def handle_city(msg: Message, 
-                      state: FSMContext, 
-                      weather_client: WeatherClient):
+async def handle_city(msg: Message, state: FSMContext, 
+                      weather_client: WeatherClient) -> None:
     if msg.location:
         location = {'lat': str(msg.location.latitude),
                     'lon': str(msg.location.longitude)}
